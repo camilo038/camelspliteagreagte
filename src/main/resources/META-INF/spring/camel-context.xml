@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:cxf="http://camel.apache.org/schema/cxf"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring        http://camel.apache.org/schema/spring/camel-spring.xsd  http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf-2.8.3.xsd">
+    <cxf:cxfEndpoint address="http://localhost:9292/cxf/report"
+        id="reportEndpoint" serviceClass="com.mycompany.camel.cxf.code.first.spring.incident.IncidentService"/>
+    <!-- <bean -->
+    <!-- class="com.mycompany.camel.cxf.code.first.spring.incident.ReportIncidentProcessor" 
+		id="reportIncidentProcessor"/> -->
+    <bean
+        class="com.mycompany.camel.cxf.code.first.spring.incident.StatusIncidentProcessor" id="statusIncidentProcessor"/>
+    <bean
+        class="com.mycompany.camel.cxf.code.first.spring.incident.JoinReplyAggregationStrategy" id="agregador"/>
+    <!-- <bean class="org.apache.camel.component.jms.JmsComponent" id="jms"> -->
+    <!-- <property name="connectionFactory"> -->
+    <!-- <bean class="org.apache.activemq.ActiveMQConnectionFactory"> -->
+    <!-- <property name="brokerURL" value="tcp://"/> -->
+    <!-- </bean> -->
+    <!-- </property> -->
+    <!-- </bean> -->
+    <camelContext id="camelContext-34f88846-8391-4a2d-a36d-d24b00f2957a"
+        streamCache="true" threadNamePattern="100" xmlns="http://camel.apache.org/schema/spring">
+        <threadPoolProfile defaultProfile="true" id="changedProfile"
+            maxQueueSize="100" poolSize="3"/>
+        <route id="TR_inciio">
+            <from id="_from2" uri="cxf:bean:reportEndpoint?dataFormat=MESSAGE"/>
+            <to id="_to1" uri="direct:salida"/>
+        </route>
+        
+        <route id="_route2">
+            <from id="_from3" uri="direct:salida"/>
+            <pollEnrich id="_pollEnrich1">
+                <simple>file:int?noop=true</simple>
+            </pollEnrich>
+            <to id="_to5" uri="direct:tras"/>
+            <log id="_log1" message="paso  unooooooooooooo  ${body}"/>
+      
+            
+        </route>
+        
+        <route id="_route1">
+            <from id="_from1" uri="direct:tras"/>
+            <split id="_split1" parallelProcessing="true" strategyRef="agregador">
+                <tokenize inheritNamespaceTagName="consultarResponse"
+                    token="datos_preexistencias" xml="true"/>
+                <to id="_to4" uri="log:'Hello World'"/>
+                <to id="_to3" uri="direct:propidad2"/>
+                <setProperty id="_setProperty1" propertyName="cuerpo">
+                    <simple>${body}</simple>
+                </setProperty>
+                <setHeader headerName="cuerpo2prueba" id="_setHeader1">
+                    <simple>${body}</simple>
+                </setHeader>
+                <transform id="_transform1">
+                    <simple>${body.replaceAll("ns1:datos_preexistencia", "ns3:datos_preexistencia")}</simple>
+                </transform>
+                <transform id="_transform2">
+                    <simple>${body.replaceAll("ns3:codigo", "ns6:codigo")}</simple>
+                </transform>
+                                
+                
+                <to id="_to10" uri="stream:out"/>
+                
+                
+            </split>
+        </route>
+        <route id="_route4">
+            <from id="_from5" uri="direct:propidad2"/>
+            <log id="_log2" message="hola cuerpo ${body}"/>
+            <!-- <setBody id="_setBody1"> -->
+            <!-- <simple>${property.cuerpo}</simple> -->
+            <!-- </setBody> -->
+            <!-- <to id="_to5" uri="direct:pro"/> -->
+        </route>
+        <!-- <route id="_route3"> -->
+        <!-- <from id="_from4" uri="direct:pro"/> -->
+        <!-- <log id="_log5" message="alo *** ${property.cuerpo} "/> -->
+        <!-- </route> -->
+    </camelContext>
+</beans>

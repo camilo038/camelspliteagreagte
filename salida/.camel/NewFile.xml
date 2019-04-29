@@ -1,0 +1,28 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.nuevaeps.com.co/canonicos/tecnicos/cabecera/1.0" xmlns:ns1="http://www.nuevaeps.com.co/mensajes/pac/preexistencia/consultar/1.0" xmlns:ns2="http://www.nuevaeps.com.co/canonicos/mde/identificacion/1.0" xmlns:ns3="http://www.nuevaeps.com.co/canonicos/tecnicos/fault/1.0">
+        <soapenv:Header>
+                <ns:response_header>
+                        <ns:tiempo_respuesta>191</ns:tiempo_respuesta>
+                </ns:response_header>
+        </soapenv:Header>
+   <soapenv:Body>
+          <ns1:consultarResponse>
+                          <ns1:mensajeGenerico>
+                                                         <ns2:resultadoCodigo>0</ns2:resultadoCodigo>
+                                                            </ns1:mensajeGenerico>
+                                    <ns1:datos_preexistencias>
+                                                        <ns1:datos_preexistencia>
+                                                 <ns3:codigo>J342</ns3:codigo>
+                                                 <ns3:descripcion>DESVIACION DEL TABIQUE NASAL</ns3:descripcion>
+                                         </ns1:datos_preexistencia>
+                                        <ns1:datos_preexistencia>
+                                                 <ns3:codigo>N609</ns3:codigo>
+                                                 <ns3:descripcion>DISPLASIA MAMARIA BENIGNA, SIN OTRA ESPECIFICACION</ns3:descripcion>
+                                         </ns1:datos_preexistencia>
+                                        <ns1:datos_preexistencia>
+                                                 <ns3:codigo>J304</ns3:codigo>
+                                                 <ns3:descripcion>RINITIS ALERGICA, NO ESPECIFICADA</ns3:descripcion>
+                                         </ns1:datos_preexistencia>
+                                        </ns1:datos_preexistencias>
+  </ns1:consultarResponse>
+        </soapenv:Body>
+</soapenv:Envelope>

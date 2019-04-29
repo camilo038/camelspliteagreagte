@@ -1,0 +1,6 @@
+<tt_xmlrespuesta>
+	<tt_xmlrespuestafacturaRow>
+		<incidentId>${exchange.properties.depues}</incidentId>
+</tt_xmlrespues>
+
+
